@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Java_Assignment2_Suite">
+    <test name="Java_Assignment2">
+        <classes>
+            <class name="org.example.Java_Assignment2_Test"/>
+        </classes>
+    </test>
+</suite>

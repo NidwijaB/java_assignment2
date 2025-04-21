@@ -1,5 +1,6 @@
 # Java Assignment 2
 
+This assignment is the same as Assignment 1 but will use Testng
 This is a Java project that uses **TestNG**, **Selenium WebDriver**, and **WebDriverManager** to automate code generation and testing across Copilot and CodeChef.
 
 ---
@@ -19,7 +20,7 @@ Make sure the following tools are installed:
 
 - **Java 24**
 - **Maven 3.6.3 or newer**
-- **Any IDE** (IntelliJ IDEA recommended)
+- **IntelliJ IDEA IDE** 
 
 ---
 
@@ -43,33 +44,18 @@ mvn clean test
 The project uses the following dependencies. These are defined in the `pom.xml` file:
 
 - **Selenium**: For browser automation
-  ```xml
-  <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-java</artifactId>
-      <version>4.20.0</version>
-  </dependency>
-  ```
+ 
 
 - **WebDriverManager**: To automatically manage browser drivers
-  ```xml
-  <dependency>
-      <groupId>io.github.bonigarcia</groupId>
-      <artifactId>webdrivermanager</artifactId>
-      <version>5.8.0</version>
-  </dependency>
-  ```
+ 
 
 - **TestNG**: For test framework support
-  ```xml
-  <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>7.9.0</version>
-      <scope>test</scope>
-  </dependency>
-  ```
+  
+- **SLF4J**: For logging framework
 
+
+- **Logback**: For logging backend implementation
+  
 ---
 
 ## Technologies Used
@@ -103,8 +89,4 @@ Java_Assignment2/
 - **AddFunction_assignment1.py**: Generated Python function from Copilot
 - **TestReport_assignment1.html**: Detailed test report including execution status and runtime info
 
----
 
-## License
-
-This project is for educational purposes.

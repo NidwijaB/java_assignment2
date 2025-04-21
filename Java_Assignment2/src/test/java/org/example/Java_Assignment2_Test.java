@@ -30,62 +30,75 @@ public class Java_Assignment2_Test {
         wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         driver.manage().window().maximize();
         startTime = System.currentTimeMillis();
+        logger.info("Test execution started.");
     }
 
     @Test(priority = 1)
     public void fetchPythonCodeFromCopilot() throws InterruptedException, IOException, UnsupportedFlavorException {
         driver.get("https://copilot.microsoft.com/chat");
+        logger.info("Navigated to Copilot.");
 
         WebElement messageBox = wait.until(ExpectedConditions.elementToBeClickable(By.tagName("textarea")));
         messageBox.sendKeys("Please provide a Python function that accepts space-separated numbers from the user input (stdin), performs addition on those numbers,.This should return and print result. Do not include any comments.");
         messageBox.sendKeys(Keys.RETURN);
+        logger.info("Sent message to Copilot.");
 
         Thread.sleep(5000);
         WebElement copyButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@title='Copy code']")));
+        logger.info("Copied code.");
         copyButton.click();
 
         String code = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
         Files.write(Paths.get("AddFunction_assignment1.py"), code.getBytes());
         logger.info("Code saved to file.");
+
         Thread.sleep(5000);
     }
 
     @Test(priority = 2, dependsOnMethods = "fetchPythonCodeFromCopilot")
     public void runCodeOnCodeChef() throws IOException, InterruptedException {
         driver.get("https://www.codechef.com/ide");
+        logger.info("Navigated to CodeChef IDE.");
         Thread.sleep(8000);
 
         WebElement dropdown = wait.until(ExpectedConditions.elementToBeClickable(By.id("language-select")));
         dropdown.click();
         WebElement pythonOption = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//li[text()='Python3']")));
         pythonOption.click();
+        logger.info("Selected Python3.");
         Thread.sleep(5000);
 
         String pythonCode = Files.readString(Paths.get("AddFunction_assignment1.py"));
         JavascriptExecutor js = (JavascriptExecutor) driver;
+        logger.info("Loaded Python code.");
         String escapedCode = pythonCode.replace("\\", "\\\\").replace("\n", "\\n").replace("\"", "\\\"").replace("\r", "");
 
         js.executeScript("ace.edit(document.getElementsByClassName('ace_editor')[0]).setValue(\"" + escapedCode + "\");");
         Thread.sleep(5000);
+        logger.info("Loaded Python code in editor.");
 
         WebElement inputBox = driver.findElement(By.xpath("//div[contains(@class, '_tcContainer_1mvh4_454')]"));
         WebElement stdinBox = inputBox.findElement(By.tagName("textarea"));
         stdinBox.sendKeys("40 20");
         Thread.sleep(5000);
+        logger.info("Loaded input in editor.");
 
         WebElement runBtn = driver.findElement(By.xpath("//div[@class='_execute-btn-container_1mvh4_215']"));
         runBtn.findElement(By.tagName("button")).click();
 
         Thread.sleep(5000);
+        logger.info("Clicked run button.");
 
         WebElement outputBox = driver.findElement(By.xpath("//div[contains(@class, '_dark_58rxo_263')]"));
         String rawOutput = outputBox.getText();
+        logger.info("Output received.");
 
         String status = extract(rawOutput, "Status :", "Time:");
         String time = extract(rawOutput, "Time:", "Memory:");
         String memory = extract(rawOutput, "Memory:", "Sample Input");
         String sampleInput = extract(rawOutput, "Sample Input", "Your Output");
         String yourOutput = rawOutput.substring(rawOutput.indexOf("Your Output") + "Your Output".length()).trim();
+        logger.info("Extracted output.");
 
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
@@ -109,6 +122,7 @@ public class Java_Assignment2_Test {
     }
 
     private String extract(String text, String start, String end) {
+        logger.info("Extracting " + start + " and " + end + " from " + text);
         return text.substring(text.indexOf(start) + start.length(), text.indexOf(end)).trim();
     }
 
